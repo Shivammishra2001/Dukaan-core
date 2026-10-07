@@ -1,0 +1,166 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shifts",
+  "info": {
+    "singularName": "shift",
+    "pluralName": "shifts",
+    "displayName": "Shift",
+    "description": "DATABASE_SCHEMA.md §5.1. Rules SH-1/SH-2 (at most one OPEN shift per counter, and per user per store) are DB partial-unique-index constraints (see migrations), not app-level checks — so they hold even under concurrent shift-open attempts. Writes happen through shift.service.ts, never bare Content-API CRUD (mirrors the order/checkout pattern)."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "counter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::counter.counter",
+      "required": true,
+      "useJoinTable": false
+    },
+    "cashier": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::app-user.app-user",
+      "required": true,
+      "useJoinTable": false
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "OPEN",
+        "PENDING_COUNT",
+        "CLOSED",
+        "UNDER_REVIEW"
+      ],
+      "required": true,
+      "default": "OPEN"
+    },
+    "opened_at": {
+      "type": "datetime",
+      "required": true
+    },
+    "closed_at": {
+      "type": "datetime"
+    },
+    "opening_float_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cash_sales_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "card_sales_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "upi_sales_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "wallet_sales_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "credit_sales_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cash_collections_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cash_in_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cash_out_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cash_refunds_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "expected_cash_paise": {
+      "type": "biginteger"
+    },
+    "actual_cash_paise": {
+      "type": "biginteger"
+    },
+    "variance_paise": {
+      "type": "biginteger"
+    },
+    "denomination_count": {
+      "type": "json"
+    },
+    "variance_reason_code": {
+      "type": "enumeration",
+      "enum": [
+        "MISCOUNT",
+        "CHANGE_ERROR",
+        "UNRECORDED_PAYOUT",
+        "THEFT_SUSPECTED",
+        "OTHER"
+      ]
+    },
+    "variance_reason_text": {
+      "type": "text"
+    },
+    "bill_count": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "void_count": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "return_count": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "discount_total_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "closed_by": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::app-user.app-user",
+      "useJoinTable": false
+    },
+    "approved_by": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::app-user.app-user",
+      "useJoinTable": false
+    },
+    "force_closed": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "kind": "collectionType",
+  "collectionName": "unit_conversions",
+  "info": {
+    "singularName": "unit-conversion",
+    "pluralName": "unit-conversions",
+    "displayName": "Unit Conversion",
+    "description": "DATABASE_SCHEMA.md §3.4 / REQUIREMENTS.md §1. Invariant UC-A (every product has exactly one row with factor_to_base = 1 and unit_code = product.base_unit) is enforced by a DB trigger — see database/migrations — and defended in application code by the unit-conversion lifecycle."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "unit_conversions",
+      "required": true,
+      "useJoinTable": false
+    },
+    "unit_code": {
+      "type": "enumeration",
+      "enum": [
+        "G",
+        "KG",
+        "QUINTAL",
+        "ML",
+        "L",
+        "PCS",
+        "DOZEN",
+        "PACKET",
+        "CARTON",
+        "BORI",
+        "CRATE"
+      ],
+      "required": true
+    },
+    "factor_to_base": {
+      "type": "decimal",
+      "required": true,
+      "min": 0.000001,
+      "description": "NUMERIC(18,6) at the DB layer; precision fixed by migration. 1 unit_code = factor_to_base base units. Must be > 0 (Rule UC-1/UC-3)."
+    },
+    "is_sale_unit": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "is_purchase_unit": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "price_override_paise": {
+      "type": "biginteger",
+      "min": "0"
+    },
+    "label_local": {
+      "type": "string"
+    },
+    "sort_order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "DATABASE_SCHEMA.md §3.2. Note: product_barcodes is out of Milestone 1 scope, so the `barcodes` relation is omitted here (it is additive and can be added later without touching this schema)."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "useJoinTable": false
+    },
+    "sku": {
+      "type": "string",
+      "required": true,
+      "maxLength": 40
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "name_local": {
+      "type": "string"
+    },
+    "search_text": {
+      "type": "text",
+      "description": "Maintained by the product lifecycle hook (name || name_local || transliteration || sku). Not user-editable."
+    },
+    "hsn_code": {
+      "type": "string",
+      "maxLength": 8
+    },
+    "base_unit": {
+      "type": "enumeration",
+      "enum": [
+        "G",
+        "ML",
+        "PCS"
+      ],
+      "required": true
+    },
+    "allow_fractional": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "quantity_precision": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0,
+      "max": 3
+    },
+    "default_sale_unit": {
+      "type": "string",
+      "required": true
+    },
+    "default_purchase_unit": {
+      "type": "string",
+      "required": true
+    },
+    "pricing_unit": {
+      "type": "string",
+      "required": true
+    },
+    "requires_quantity_prompt": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "mrp_paise": {
+      "type": "biginteger",
+      "min": "0"
+    },
+    "sell_rate_paise": {
+      "type": "biginteger",
+      "required": true,
+      "min": "0"
+    },
+    "wholesale_tier1_rate_paise": {
+      "type": "biginteger",
+      "min": "0",
+      "description": "Milestone B2B addition — rate per pricing_unit when a booked line's qty (in default_purchase_unit) falls in [5, 20). NULL falls back to sell_rate_paise."
+    },
+    "wholesale_tier2_rate_paise": {
+      "type": "biginteger",
+      "min": "0",
+      "description": "Milestone B2B addition — rate per pricing_unit when a booked line's qty (in default_purchase_unit) is >= 20. NULL falls back to wholesale_tier1_rate_paise, then sell_rate_paise."
+    },
+    "last_cost_paise": {
+      "type": "biginteger"
+    },
+    "gst_rate": {
+      "type": "decimal",
+      "required": true,
+      "default": 0,
+      "min": 0,
+      "max": 50
+    },
+    "cess_rate": {
+      "type": "decimal",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "tax_inclusive": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "discount_exempt": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "is_service": {
+      "type": "boolean",
+      "required": true,
+      "default": false,
+      "description": "Milestone 4 addition (not in DATABASE_SCHEMA.md v1 — see backend/README.md). A service line (labor, haircut, table charge, ...) has no physical stock: checkout.service skips FEFO allocation and stock_movements entirely for these lines, using a fixed zero-cost pseudo-batch instead of a real inventory_batches row."
+    },
+    "track_batches": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "track_expiry": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "reorder_level_base": {
+      "type": "decimal"
+    },
+    "reorder_qty_base": {
+      "type": "decimal"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "sales_rank": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "is_active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "unit_conversions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::unit-conversion.unit-conversion",
+      "mappedBy": "product"
+    },
+    "batches": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::inventory-batch.inventory-batch",
+      "mappedBy": "product"
+    }
+  }
+}

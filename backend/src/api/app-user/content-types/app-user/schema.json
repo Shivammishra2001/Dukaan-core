@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "app_users",
+  "info": {
+    "singularName": "app-user",
+    "pluralName": "app-users",
+    "displayName": "App User",
+    "description": "DATABASE_SCHEMA.md §2.5. Extended for the Tenant Onboarding / Auth milestone with phone, password_hash and store_roles — see src/api/auth/services/auth.ts. `pin_hash`/PIN-login (TEN-004) is documented but out of this milestone's scope."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "tenant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tenant.tenant",
+      "required": true,
+      "useJoinTable": false
+    },
+    "full_name": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 15,
+      "unique": true,
+      "description": "Global uniqueness (not just per-tenant, unlike DATABASE_SCHEMA.md §2.5's email constraint) is a deliberate addition: POST /api/auth/login resolves a user from phone alone, before any tenant is known."
+    },
+    "password_hash": {
+      "type": "string",
+      "private": true
+    },
+    "pin_hash": {
+      "type": "string",
+      "private": true,
+      "description": "DATABASE_SCHEMA.md §2.5 / PRD.md TEN-004 — short numeric PIN for shared-terminal cashier login (POST /api/auth/pin-login), argon2id-hashed like password_hash. No 'set PIN' admin surface exists yet, so this stays null until a follow-up milestone adds one."
+    },
+    "last_login_at": {
+      "type": "datetime"
+    },
+    "is_active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "store_roles": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::app-user-store-role.app-user-store-role",
+      "mappedBy": "user"
+    }
+  }
+}

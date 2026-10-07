@@ -1,0 +1,99 @@
+{
+  "kind": "collectionType",
+  "collectionName": "customers",
+  "info": {
+    "singularName": "customer",
+    "pluralName": "customers",
+    "displayName": "Customer",
+    "description": "DATABASE_SCHEMA.md §6.1. No plaintext phone/address attribute exists by design — see src/api/customer/services/pii-crypto.ts. Callers submit plaintext phone/address only to the custom controller actions, which encrypt before persisting."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "client_uuid": {
+      "type": "string",
+      "description": "Set when the customer was created offline (REQUIREMENTS.md §0.3)."
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "name_local": {
+      "type": "string"
+    },
+    "phone_enc": {
+      "type": "text",
+      "description": "AES-256-GCM ciphertext of the phone number, base64. Equivalent to BYTEA via pgcrypto in the SQL spec — see pii-crypto.ts for the rationale."
+    },
+    "phone_last4": {
+      "type": "string",
+      "maxLength": 4,
+      "description": "Searchable without decryption."
+    },
+    "phone_hash": {
+      "type": "string",
+      "description": "Deterministic HMAC-SHA256 (hex) of the normalised phone number, for exact lookup and the (store, phone_hash) uniqueness constraint (migration-enforced)."
+    },
+    "address_enc": {
+      "type": "text",
+      "description": "AES-256-GCM ciphertext of the address, base64."
+    },
+    "gstin": {
+      "type": "string",
+      "maxLength": 15
+    },
+    "state_code": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2
+    },
+    "credit_limit_enabled": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "credit_limit_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0",
+      "min": "0",
+      "description": "0 means no limit when credit_limit_enabled = false (Rule CR-1)."
+    },
+    "credit_days": {
+      "type": "integer",
+      "required": true,
+      "default": 30
+    },
+    "opening_balance_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "current_balance_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0",
+      "description": "CACHED mirror of the last customer_ledger_entries.running_balance_paise. Never the source of truth (Rule LED-2) — written only by ledger.service.ts."
+    },
+    "last_txn_at": {
+      "type": "datetime"
+    },
+    "tags": {
+      "type": "json",
+      "description": "Equivalent to TEXT[] in the SQL spec; stored as a JSON string array."
+    },
+    "is_active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  }
+}

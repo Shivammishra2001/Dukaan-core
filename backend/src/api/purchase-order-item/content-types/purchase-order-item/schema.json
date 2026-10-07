@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "purchase_order_items",
+  "info": {
+    "singularName": "purchase-order-item",
+    "pluralName": "purchase-order-items",
+    "displayName": "Purchase Order Item",
+    "description": "DATABASE_SCHEMA.md §7.2."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "purchase_order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::purchase-order.purchase-order",
+      "required": true,
+      "useJoinTable": false
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "required": true,
+      "useJoinTable": false
+    },
+    "ordered_qty": {
+      "type": "decimal",
+      "required": true
+    },
+    "ordered_unit": {
+      "type": "string",
+      "required": true
+    },
+    "conversion_factor": {
+      "type": "decimal",
+      "required": true
+    },
+    "ordered_qty_base": {
+      "type": "decimal",
+      "required": true
+    },
+    "received_qty_base": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "expected_rate_paise": {
+      "type": "biginteger"
+    }
+  }
+}

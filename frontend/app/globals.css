@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * TASKS_BREAKDOWN.md §4.1: the POS route is a fixed "dark-on-light,
+ * high-contrast" theme (dark text on a light background, for readability
+ * under bright shop lighting) — not adaptive to OS dark-mode preference.
+ */
+/*
+ * PART 1 theme engine: semantic CSS variables swapped by [data-theme] on
+ * <html> (set by context/ThemeContext.tsx) — no full-page reload. `blue` is
+ * the default (:root itself), so no [data-theme="blue"] block is needed;
+ * the other three presets override it.
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-primary: #2563eb; /* Default Professional Blue */
+  --color-primary-hover: #1d4ed8;
+  --color-accent: #4f46e5;
+}
+
+:root[data-theme='green'] {
+  --color-primary: #15803d; /* Kirana Forest Green */
+  --color-primary-hover: #166534;
+  --color-accent: #16a34a;
+}
+
+:root[data-theme='indigo'] {
+  --color-primary: #4f46e5; /* Modern Slate Indigo */
+  --color-primary-hover: #4338ca;
+  --color-accent: #6366f1;
+}
+
+:root[data-theme='amber'] {
+  --color-primary: #d97706; /* Mustard Enterprise */
+  --color-primary-hover: #b45309;
+  --color-accent: #f59e0b;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tenants",
+  "info": {
+    "singularName": "tenant",
+    "pluralName": "tenants",
+    "displayName": "Tenant",
+    "description": "Top-level account owning one or more stores. Minimal stub — full tenant management is out of Milestone 1 scope; included only because store.tenant is a required relation in DATABASE_SCHEMA.md §2.2."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": { "type": "string", "required": true },
+    "tenant_code": {
+      "type": "string",
+      "maxLength": 40,
+      "unique": true,
+      "description": "Not in DATABASE_SCHEMA.md §2.1 — added for the Tenant Onboarding milestone as an alternate, globally-unique login identifier (the 'Store Code' field on the login form) alongside phone. Auto-slugged from company_name at registration."
+    },
+    "legal_name": { "type": "string" },
+    "gstin": { "type": "string", "maxLength": 15 },
+    "plan": {
+      "type": "enumeration",
+      "enum": ["TRIAL", "STANDARD", "PRO", "ENTERPRISE"],
+      "required": true,
+      "default": "STANDARD"
+    },
+    "is_active": { "type": "boolean", "required": true, "default": true },
+    "stores": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::store.store",
+      "mappedBy": "tenant"
+    }
+  }
+}

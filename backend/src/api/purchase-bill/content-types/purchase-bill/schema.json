@@ -1,0 +1,124 @@
+{
+  "kind": "collectionType",
+  "collectionName": "purchase_bills",
+  "info": {
+    "singularName": "purchase-bill",
+    "pluralName": "purchase-bills",
+    "displayName": "Purchase Bill",
+    "description": "DATABASE_SCHEMA.md §7.3 (GRN + invoice combined). This is what the Milestone 6 brief calls 'purchase_order' by its field list (invoice_number/invoice_date/payment_status) — reconciled to the DB spec's actual name here, since a genuinely different purchase_order (pre-order) content type already exists. Read-only via the Content API (routes/purchase-bill.ts) — all writes happen inside purchase-inward's Knex transaction, same pattern as order/shift."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "supplier": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::supplier.supplier",
+      "required": true,
+      "useJoinTable": false
+    },
+    "purchase_order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::purchase-order.purchase-order",
+      "useJoinTable": false
+    },
+    "grn_no": {
+      "type": "string",
+      "required": true,
+      "maxLength": 30
+    },
+    "supplier_invoice_no": {
+      "type": "string"
+    },
+    "supplier_invoice_date": {
+      "type": "date"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "DRAFT",
+        "PENDING_APPROVAL",
+        "POSTED",
+        "CANCELLED"
+      ],
+      "required": true,
+      "default": "POSTED"
+    },
+    "subtotal_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "discount_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "tax_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "freight_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "other_charges_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "round_off_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "total_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "paid_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "payment_status": {
+      "type": "enumeration",
+      "enum": [
+        "UNPAID",
+        "PARTIALLY_PAID",
+        "PAID"
+      ],
+      "required": true,
+      "default": "UNPAID"
+    },
+    "due_date": {
+      "type": "date"
+    },
+    "received_at": {
+      "type": "datetime",
+      "required": true
+    },
+    "business_date": {
+      "type": "date",
+      "required": true
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::purchase-bill-item.purchase-bill-item",
+      "mappedBy": "purchase_bill"
+    }
+  }
+}

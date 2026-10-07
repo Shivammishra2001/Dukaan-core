@@ -1,0 +1,77 @@
+{
+  "kind": "collectionType",
+  "collectionName": "suppliers",
+  "info": {
+    "singularName": "supplier",
+    "pluralName": "suppliers",
+    "displayName": "Supplier",
+    "description": "DATABASE_SCHEMA.md §7.1. `phone` is AES-256-GCM encrypted, reusing src/api/customer/services/pii-crypto.ts (generic, not customer-specific) rather than duplicating that module — same design as customer.phone_enc, see that schema's description."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "contact_person": {
+      "type": "string"
+    },
+    "phone_enc": {
+      "type": "text",
+      "description": "AES-256-GCM ciphertext, base64 — see pii-crypto.ts."
+    },
+    "phone_last4": {
+      "type": "string",
+      "maxLength": 4
+    },
+    "phone_hash": {
+      "type": "string",
+      "description": "Deterministic HMAC-SHA256 (hex) for exact lookup."
+    },
+    "email": {
+      "type": "email"
+    },
+    "address": {
+      "type": "text"
+    },
+    "gstin": {
+      "type": "string",
+      "maxLength": 15
+    },
+    "state_code": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2
+    },
+    "payment_terms_days": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "opening_balance_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "current_balance_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0",
+      "description": "+ = we owe supplier. CACHED mirror of the last supplier_ledger_entries.running_balance_paise — never the source of truth, written only by purchase-inward's ledger step (mirrors Rule LED-2)."
+    },
+    "is_active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  }
+}

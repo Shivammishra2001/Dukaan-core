@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "app_user_store_roles",
+  "info": {
+    "singularName": "app-user-store-role",
+    "pluralName": "app-user-store-roles",
+    "displayName": "App User Store Role",
+    "description": "DATABASE_SCHEMA.md §2.5 `app_user_store_roles` — grants one app_user a role within one store. A user with rows across multiple stores can hold different roles per store without a separate login. Written directly via Knex inside src/api/auth/services/auth.ts's registration/onboarding transaction (Rule BE-2 / ADR-04 pattern), same as onboardStoreCore."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::app-user.app-user",
+      "required": true,
+      "useJoinTable": false
+    },
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::role.role",
+      "required": true,
+      "useJoinTable": false
+    },
+    "is_active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    }
+  }
+}

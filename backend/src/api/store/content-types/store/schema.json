@@ -1,0 +1,152 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stores",
+  "info": {
+    "singularName": "store",
+    "pluralName": "stores",
+    "displayName": "Store",
+    "description": "The tenant boundary for all operational data. DATABASE_SCHEMA.md §2.2."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "tenant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tenant.tenant",
+      "required": true,
+      "useJoinTable": false
+    },
+    "code": {
+      "type": "string",
+      "required": true,
+      "maxLength": 10,
+      "regex": "^[A-Za-z0-9]+$"
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "name_local": {
+      "type": "string"
+    },
+    "default_mode": {
+      "type": "enumeration",
+      "enum": [
+        "KIRANA",
+        "RETAIL"
+      ],
+      "required": true,
+      "default": "KIRANA"
+    },
+    "business_preset": {
+      "type": "enumeration",
+      "enum": [
+        "KIRANA",
+        "SALOON",
+        "DHABA",
+        "REPAIR",
+        "DISTRIBUTOR"
+      ],
+      "description": "Milestone 4 addition, NOT in DATABASE_SCHEMA.md v1 (see backend/README.md). Deliberately separate from `default_mode` (ADR-03's two archetypes, KIRANA/RETAIL, which the whole POS UI branches on) — this only records which onboarding preset seeded this store's `config` defaults and starter catalogue; it is never read at checkout time.",
+      "default": "KIRANA"
+    },
+    "address_line1": {
+      "type": "string"
+    },
+    "address_line2": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "state_code": {
+      "type": "string",
+      "required": true,
+      "minLength": 2,
+      "maxLength": 2
+    },
+    "pincode": {
+      "type": "string",
+      "maxLength": 6
+    },
+    "phone": {
+      "type": "string",
+      "maxLength": 15
+    },
+    "gstin": {
+      "type": "string",
+      "maxLength": 15
+    },
+    "currency": {
+      "type": "string",
+      "required": true,
+      "default": "INR",
+      "maxLength": 3
+    },
+    "timezone": {
+      "type": "string",
+      "required": true,
+      "default": "Asia/Kolkata"
+    },
+    "day_start_time": {
+      "type": "time",
+      "required": true,
+      "default": "00:00:00.000"
+    },
+    "financial_year_start": {
+      "type": "integer",
+      "required": true,
+      "default": 4,
+      "min": 1,
+      "max": 12
+    },
+    "invoice_prefix": {
+      "type": "string",
+      "required": true,
+      "default": "INV",
+      "maxLength": 10
+    },
+    "config": {
+      "type": "json",
+      "required": true,
+      "default": {}
+    },
+    "is_active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category",
+      "mappedBy": "store"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product.product",
+      "mappedBy": "store"
+    },
+    "customers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::customer.customer",
+      "mappedBy": "store"
+    },
+    "counters": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::counter.counter",
+      "mappedBy": "store"
+    },
+    "shifts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::shift.shift",
+      "mappedBy": "store"
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "kind": "collectionType",
+  "collectionName": "b2b_orders",
+  "info": {
+    "singularName": "b2b-order",
+    "pluralName": "b2b-orders",
+    "displayName": "B2B Order",
+    "description": "Milestone 6 addition — no schema for this exists in DATABASE_SCHEMA.md (see backend/README.md). A wholesale order booked by phone/sales-rep, going through BOOKED -> DISPATCHED -> DELIVERED rather than the retail POS's instant checkout.service.ts. Deliberately its own table, not the `orders`/`order_items` retail tables — reads/writes the same `inventory_batches` pool as POS (Part 4's requirement) but keeps a hard boundary from the verified checkout flow (zero breaking changes). Read-only via the Content API — all writes go through b2b-dispatch.service.ts."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::customer.customer",
+      "required": true,
+      "useJoinTable": false
+    },
+    "client_uuid": {
+      "type": "string",
+      "required": true
+    },
+    "route": {
+      "type": "string",
+      "description": "Free-text delivery route/zone label, used to group orders onto a loading sheet."
+    },
+    "vehicle_no": {
+      "type": "string"
+    },
+    "transporter": {
+      "type": "string"
+    },
+    "driver_name": {
+      "type": "string"
+    },
+    "freight_paise": {
+      "type": "biginteger",
+      "default": "0"
+    },
+    "freight_terms": {
+      "type": "enumeration",
+      "enum": [
+        "PAID_BY_STORE",
+        "TO_PAY_BY_CUSTOMER"
+      ],
+      "default": "PAID_BY_STORE"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "BOOKED",
+        "DISPATCHED",
+        "DELIVERED",
+        "CANCELLED"
+      ],
+      "required": true,
+      "default": "BOOKED"
+    },
+    "challan_no": {
+      "type": "string",
+      "maxLength": 30
+    },
+    "invoice_no": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "subtotal_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "tax_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "round_off_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "total_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "booked_at": {
+      "type": "datetime",
+      "required": true
+    },
+    "dispatched_at": {
+      "type": "datetime"
+    },
+    "delivered_at": {
+      "type": "datetime"
+    },
+    "business_date": {
+      "type": "date",
+      "required": true
+    },
+    "note": {
+      "type": "text"
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::b2b-order-item.b2b-order-item",
+      "mappedBy": "b2b_order"
+    }
+  }
+}

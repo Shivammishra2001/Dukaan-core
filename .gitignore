@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Strapi local state
+backend/.tmp/
+backend/.strapi/
+backend/.strapi-updater.json
+backend/public/uploads/*
+!backend/public/uploads/.gitkeep
+
+# Secret environment files (keep only the examples)
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# SQLite databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Logs / tooling / OS
+*.log
+.claude/
+.vercel/
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store

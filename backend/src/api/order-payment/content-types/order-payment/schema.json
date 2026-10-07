@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "order_payments",
+  "info": {
+    "singularName": "order-payment",
+    "pluralName": "order-payments",
+    "displayName": "Order Payment",
+    "description": "DATABASE_SCHEMA.md §5.5. No standalone controllers/routes — written only inside checkout.service's transaction."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "required": true,
+      "useJoinTable": false
+    },
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "method": {
+      "type": "enumeration",
+      "enum": [
+        "CASH",
+        "CARD",
+        "UPI",
+        "WALLET",
+        "CREDIT",
+        "BANK_TRANSFER",
+        "CHEQUE"
+      ],
+      "required": true
+    },
+    "amount_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "tendered_paise": {
+      "type": "biginteger"
+    },
+    "change_paise": {
+      "type": "biginteger"
+    },
+    "reference": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    }
+  }
+}

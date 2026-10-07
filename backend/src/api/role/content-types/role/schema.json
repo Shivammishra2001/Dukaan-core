@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "roles",
+  "info": {
+    "singularName": "role",
+    "pluralName": "roles",
+    "displayName": "Role",
+    "description": "DATABASE_SCHEMA.md §2.5 / PRD.md TEN-003. The 5 system roles (OWNER, MANAGER, CASHIER, INVENTORY_CLERK, ACCOUNTANT) are seeded at bootstrap (src/index.ts) with tenant = null. Per-tenant custom roles and the role_permissions catalogue are documented (TEN-003 notes 'permission-based not role-hardcoded', P2 custom roles) but out of this milestone's scope — only role identity (for routing/display) is wired up, not fine-grained permission enforcement."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "tenant": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tenant.tenant",
+      "description": "NULL for the 5 system roles seeded at bootstrap.",
+      "useJoinTable": false
+    },
+    "code": {
+      "type": "string",
+      "required": true,
+      "enum": [
+        "OWNER",
+        "MANAGER",
+        "CASHIER",
+        "INVENTORY_CLERK",
+        "ACCOUNTANT"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "is_system": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "discount_max_pct": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    }
+  }
+}

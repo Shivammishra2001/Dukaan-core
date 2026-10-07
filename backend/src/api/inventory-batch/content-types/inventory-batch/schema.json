@@ -1,0 +1,96 @@
+{
+  "kind": "collectionType",
+  "collectionName": "inventory_batches",
+  "info": {
+    "singularName": "inventory-batch",
+    "pluralName": "inventory-batches",
+    "displayName": "Inventory Batch",
+    "description": "DATABASE_SCHEMA.md §4.1. FEFO allocation (REQUIREMENTS.md §3.2) reads this table under row locks; partial/FEFO indexes are added by migration since Strapi's schema builder cannot express conditional indexes."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "batches",
+      "required": true,
+      "useJoinTable": false
+    },
+    "batch_no": {
+      "type": "string",
+      "required": true,
+      "default": "DEFAULT",
+      "maxLength": 60
+    },
+    "mfg_date": {
+      "type": "date"
+    },
+    "expiry_date": {
+      "type": "date"
+    },
+    "cost_price_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0",
+      "description": "Per BASE unit, ex-tax, weighted average across receipts (REQUIREMENTS.md §3.1)."
+    },
+    "landed_cost_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0",
+      "description": "Per BASE unit, incl. apportioned freight."
+    },
+    "mrp_paise": {
+      "type": "biginteger"
+    },
+    "selling_price_paise": {
+      "type": "biginteger",
+      "description": "Per pricing_unit; NULL = use product rate (Rule PR-3)."
+    },
+    "opening_stock_base": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "current_stock_base": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "reserved_base": {
+      "type": "decimal",
+      "required": true,
+      "default": 0,
+      "description": "Held by in-flight checkouts; default single-phase checkout leaves this at 0."
+    },
+    "received_at": {
+      "type": "datetime",
+      "required": true
+    },
+    "source_bill_item_id": {
+      "type": "biginteger",
+      "description": "FK to purchase_bill_items — out of Milestone 1 scope, kept as a plain reference column."
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "ACTIVE",
+        "QUARANTINE",
+        "WRITTEN_OFF",
+        "CLOSED"
+      ],
+      "required": true,
+      "default": "ACTIVE"
+    }
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": "DATABASE_SCHEMA.md §5.3. Read-only via the Content API (routes/order.ts disables create/update/delete) — all writes happen inside checkout.service's Knex transaction. device_id is omitted: device management is out of scope (no device-registration flow), and it's nullable in the spec. shift was added in Milestone 4 (see shift content type)."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "counter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::counter.counter",
+      "useJoinTable": false
+    },
+    "shift": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::shift.shift",
+      "useJoinTable": false
+    },
+    "customer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::customer.customer",
+      "useJoinTable": false
+    },
+    "cashier": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::app-user.app-user",
+      "required": true,
+      "useJoinTable": false
+    },
+    "client_uuid": {
+      "type": "string",
+      "required": true
+    },
+    "provisional_no": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "invoice_no": {
+      "type": "string",
+      "maxLength": 40
+    },
+    "financial_year": {
+      "type": "string",
+      "required": true,
+      "maxLength": 7
+    },
+    "order_type": {
+      "type": "enumeration",
+      "enum": [
+        "SALE",
+        "RETURN",
+        "EXCHANGE"
+      ],
+      "required": true,
+      "default": "SALE"
+    },
+    "original_order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "useJoinTable": false
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "DRAFT",
+        "COMPLETED",
+        "CANCELLED",
+        "PARTIALLY_RETURNED",
+        "RETURNED"
+      ],
+      "required": true,
+      "default": "COMPLETED"
+    },
+    "gross_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "line_discount_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cart_discount_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "taxable_value_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cgst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "sgst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "igst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cess_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "charges_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "round_off_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "total_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "paid_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "credit_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cogs_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "supply_type": {
+      "type": "enumeration",
+      "enum": [
+        "INTRA_STATE",
+        "INTER_STATE"
+      ],
+      "required": true,
+      "default": "INTRA_STATE"
+    },
+    "settlement_status": {
+      "type": "enumeration",
+      "enum": [
+        "SETTLED",
+        "PARTIALLY_SETTLED",
+        "UNPAID"
+      ],
+      "required": true,
+      "default": "SETTLED"
+    },
+    "is_offline_origin": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "client_created_at": {
+      "type": "datetime"
+    },
+    "server_created_at": {
+      "type": "datetime",
+      "required": true
+    },
+    "business_date": {
+      "type": "date",
+      "required": true
+    },
+    "note": {
+      "type": "text"
+    },
+    "print_count": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "order"
+    },
+    "payments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-payment.order-payment",
+      "mappedBy": "order"
+    }
+  }
+}

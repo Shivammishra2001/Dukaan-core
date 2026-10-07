@@ -1,0 +1,89 @@
+{
+  "kind": "collectionType",
+  "collectionName": "b2b_order_items",
+  "info": {
+    "singularName": "b2b-order-item",
+    "pluralName": "b2b-order-items",
+    "displayName": "B2B Order Item",
+    "description": "Milestone 6 addition — see b2b-order/content-types/b2b-order/schema.json."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "b2b_order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::b2b-order.b2b-order",
+      "required": true,
+      "useJoinTable": false
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "required": true,
+      "useJoinTable": false
+    },
+    "batch": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::inventory-batch.inventory-batch",
+      "useJoinTable": false
+    },
+    "entered_qty": {
+      "type": "decimal",
+      "required": true
+    },
+    "entered_unit": {
+      "type": "string",
+      "required": true
+    },
+    "conversion_factor": {
+      "type": "decimal",
+      "required": true
+    },
+    "qty_base": {
+      "type": "decimal",
+      "required": true
+    },
+    "unit_price_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "gst_rate": {
+      "type": "decimal",
+      "required": true
+    },
+    "taxable_value_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "cgst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "sgst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "igst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "line_total_paise": {
+      "type": "biginteger",
+      "required": true
+    }
+  }
+}

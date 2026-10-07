@@ -1,0 +1,178 @@
+{
+  "kind": "collectionType",
+  "collectionName": "order_items",
+  "info": {
+    "singularName": "order-item",
+    "pluralName": "order-items",
+    "displayName": "Order Item",
+    "description": "DATABASE_SCHEMA.md §5.4. One row per batch allocation (Rule FEFO-1). No standalone controllers/routes — never mutated outside checkout.service's transaction, and only ever read via order.items."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "required": true,
+      "useJoinTable": false
+    },
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "required": true,
+      "useJoinTable": false
+    },
+    "batch": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::inventory-batch.inventory-batch",
+      "useJoinTable": false
+    },
+    "line_group_id": {
+      "type": "string",
+      "required": true
+    },
+    "line_no": {
+      "type": "integer",
+      "required": true
+    },
+    "product_name": {
+      "type": "string",
+      "required": true
+    },
+    "product_name_local": {
+      "type": "string"
+    },
+    "hsn_code": {
+      "type": "string",
+      "maxLength": 8
+    },
+    "base_unit": {
+      "type": "enumeration",
+      "enum": [
+        "G",
+        "ML",
+        "PCS"
+      ],
+      "required": true
+    },
+    "batch_no": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "expiry_date": {
+      "type": "date"
+    },
+    "entered_qty": {
+      "type": "decimal",
+      "required": true
+    },
+    "entered_unit": {
+      "type": "string",
+      "required": true
+    },
+    "conversion_factor": {
+      "type": "decimal",
+      "required": true
+    },
+    "qty_base": {
+      "type": "decimal",
+      "required": true
+    },
+    "unit_price_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "price_source": {
+      "type": "enumeration",
+      "enum": [
+        "PRODUCT",
+        "BATCH",
+        "UNIT_OVERRIDE",
+        "MANUAL"
+      ],
+      "required": true
+    },
+    "mrp_paise": {
+      "type": "biginteger"
+    },
+    "gross_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "line_discount_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cart_discount_share_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "taxable_value_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "gst_rate": {
+      "type": "decimal",
+      "required": true
+    },
+    "cgst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "sgst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "igst_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "cess_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "tax_inclusive": {
+      "type": "boolean",
+      "required": true
+    },
+    "line_total_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "unit_cost_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "line_cogs_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "returned_qty_base": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "note": {
+      "type": "text"
+    }
+  }
+}

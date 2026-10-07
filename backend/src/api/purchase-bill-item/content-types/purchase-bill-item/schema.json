@@ -1,0 +1,116 @@
+{
+  "kind": "collectionType",
+  "collectionName": "purchase_bill_items",
+  "info": {
+    "singularName": "purchase-bill-item",
+    "pluralName": "purchase-bill-items",
+    "displayName": "Purchase Bill Item",
+    "description": "DATABASE_SCHEMA.md §7.3."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "store": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::store.store",
+      "required": true,
+      "useJoinTable": false
+    },
+    "purchase_bill": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::purchase-bill.purchase-bill",
+      "required": true,
+      "useJoinTable": false
+    },
+    "product": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "required": true,
+      "useJoinTable": false
+    },
+    "batch": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::inventory-batch.inventory-batch",
+      "useJoinTable": false
+    },
+    "received_qty": {
+      "type": "decimal",
+      "required": true
+    },
+    "received_unit": {
+      "type": "string",
+      "required": true
+    },
+    "conversion_factor": {
+      "type": "decimal",
+      "required": true
+    },
+    "received_qty_base": {
+      "type": "decimal",
+      "required": true
+    },
+    "free_qty_base": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "batch_no": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "mfg_date": {
+      "type": "date"
+    },
+    "expiry_date": {
+      "type": "date"
+    },
+    "cost_rate_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "cost_per_base_paise": {
+      "type": "biginteger",
+      "required": true
+    },
+    "discount_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "gst_rate": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "tax_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "freight_share_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "landed_cost_per_base_paise": {
+      "type": "biginteger",
+      "required": true,
+      "default": "0"
+    },
+    "mrp_paise": {
+      "type": "biginteger"
+    },
+    "selling_price_paise": {
+      "type": "biginteger"
+    },
+    "line_total_paise": {
+      "type": "biginteger",
+      "required": true
+    }
+  }
+}
