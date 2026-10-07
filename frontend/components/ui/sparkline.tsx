@@ -1,4 +1,4 @@
-/** Inline-SVG trend line, no charting library — keeps the dashboard bundle light. Purely decorative (not tied to real time-series data yet). */
+/** Inline-SVG trend line, no charting library — keeps the dashboard bundle light. */
 export function Sparkline({ points, tone = '#059669' }: { points: number[]; tone?: string }) {
   if (points.length < 2) return null;
   const max = Math.max(...points);
