@@ -1,5 +1,6 @@
 import type { Core } from '@strapi/strapi';
 import { strapiRowStamps } from './services/strapi-row';
+import { runPostSyncMigrations } from './services/post-sync-migrations';
 
 /**
  * PRD.md TEN-003 / DATABASE_SCHEMA.md §2.5: OWNER, MANAGER, CASHIER,
@@ -51,6 +52,7 @@ export default {
    * run jobs, or perform some special logic.
    */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    await runPostSyncMigrations(strapi);
     await seedSystemRoles(strapi);
   },
 };

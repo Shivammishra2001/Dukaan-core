@@ -3,6 +3,16 @@ import type { Core } from '@strapi/strapi';
 import { isDatabaseClientKind } from '@strapi/database';
 
 const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Database => {
+  // A deployed instance silently falling back to an ephemeral SQLite file loses
+  // every bill on the next restart. Render always sets RENDER=true, even when the
+  // dashboard env vars failed to load (NODE_ENV then defaults to 'development').
+  if (!env('DATABASE_CLIENT') && (env('NODE_ENV') === 'production' || env.bool('RENDER', false))) {
+    throw new Error(
+      'DATABASE_CLIENT is not set. Refusing to fall back to SQLite on a deployed instance — ' +
+        'set DATABASE_CLIENT=postgres and DATABASE_URL in the hosting environment.'
+    );
+  }
+
   const client = env('DATABASE_CLIENT', 'sqlite');
 
   if (!isDatabaseClientKind(client)) {
