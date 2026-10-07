@@ -16,7 +16,7 @@ module.exports = {
     `);
 
     await trx.raw(`CREATE INDEX idx_customers_store ON customers(store_id) WHERE is_active`);
-    await trx.raw(`CREATE INDEX idx_customers_last4 ON customers(store_id, phone_last4)`);
+    await trx.raw(`CREATE INDEX idx_customers_last4 ON customers(store_id, phone_last_4)`);
     await trx.raw(`CREATE INDEX idx_customers_name_trgm ON customers USING gin (name gin_trgm_ops)`);
     await trx.raw(`CREATE INDEX idx_customers_updated ON customers(store_id, updated_at, id)`);
     await trx.raw(`

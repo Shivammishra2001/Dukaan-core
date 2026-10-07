@@ -15,7 +15,7 @@ module.exports = {
     await trx.raw(`ALTER TABLE b2b_order_items ALTER COLUMN conversion_factor TYPE numeric(18,6) USING conversion_factor::numeric(18,6)`);
     await trx.raw(`ALTER TABLE b2b_order_items ALTER COLUMN qty_base TYPE numeric(18,4) USING qty_base::numeric(18,4)`);
     await trx.raw(`ALTER TABLE b2b_order_items ALTER COLUMN gst_rate TYPE numeric(5,2) USING gst_rate::numeric(5,2)`);
-    await trx.raw(`CREATE INDEX idx_b2b_order_items_order ON b2b_order_items(b2b_order_id)`);
+    await trx.raw(`CREATE INDEX idx_b2b_order_items_order ON b2b_order_items(b_2_b_order_id)`);
   },
   async down(trx) {
     if (!isPostgres(trx)) { console.warn('[migration] 0024_b2b_orders_constraints.js skipped under non-Postgres dialect'); return; }

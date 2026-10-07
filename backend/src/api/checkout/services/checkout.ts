@@ -882,14 +882,14 @@ function buildPrintPayload(args: {
     render_mode: 'TEXT' as const,
     copies: 1,
     mark_provisional: order.is_offline_origin,
-    header: { store_name: store.name, address_lines: [store.address_line1, store.address_line2].filter(Boolean), phone: store.phone, gstin: store.gstin },
+    header: { store_name: store.name, address_lines: [store.address_line_1, store.address_line_2].filter(Boolean), phone: store.phone, gstin: store.gstin },
     meta: {
       invoice_no: order.invoice_no,
       date_display: now.toLocaleDateString('en-IN'),
       time_display: now.toLocaleTimeString('en-IN'),
       cashier: cashier.full_name,
       counter: counter.code,
-      customer: customer ? { name: customer.name, phone_masked: customer.phone_last4 ? `••${customer.phone_last4}` : undefined } : undefined,
+      customer: customer ? { name: customer.name, phone_masked: customer.phone_last_4 ? `••${customer.phone_last_4}` : undefined } : undefined,
     },
     lines: itemRows.map(({ itemRow }) => ({
       name: itemRow.product_name,
